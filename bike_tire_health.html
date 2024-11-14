@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bike Tire Health</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="health-background">
+  <!-- Bike Tire Health Page -->
+  <div class="container" id="healthPage">
+    <h1>Bike Tire Health</h1>
+    <img src="TYRE LOGO(RSS).webp" aligwidth="200" height="150" align ="right" hspace="10" vspace="5" alt="">
+    <form onsubmit="return openThankYouPage()">
+      <label for="purchaseDate">Date of Purchase:</label>
+      <input type="date" id="purchaseDate" name="purchaseDate" required>
+
+      <label for="tireCapacity">Tire Capacity (km):</label>
+      <input type="number" id="tireCapacity" name="tireCapacity" required oninput="calculateRemainingKm()">
+      
+      <label for="kmRidden">Kilometers Covered (km):</label>
+      <input type="number" id="kmRidden" name="kmRidden" required oninput="calculateRemainingKm()">
+      
+      <label for="remainingKm">Remaining Kilometers (km):</label>
+      <input type="number" id="remainingKm" name="remainingKm" readonly>
+
+      <!-- Pie chart for Remaining Kilometers -->
+      <canvas id="remainingKmChart" width="200" height="200"></canvas>
+
+      <div class="buttons">
+        <button type="button" class="contact-button">Contact</button>
+        <button type="submit" class="submit-button">Submit</button>
+        <button type="button" class="exit-button" onclick="goToIndex()">Exit</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    let remainingKmChart;
+
+    function initializeChart() {
+      const ctx = document.getElementById('remainingKmChart').getContext('2d');
+      remainingKmChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Remaining Kilometers', 'Kilometers Covered'],
+          datasets: [{
+            data: [0, 0],
+            backgroundColor: ['#4CAF50', '#FF6384'],
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            }
+          }
+        }
+      });
+    }
+
+    function updateChart(remaining, covered) {
+      remainingKmChart.data.datasets[0].data = [remaining, covered];
+      remainingKmChart.update();
+    }
+
+    function calculateRemainingKm() {
+      const kmRidden = parseFloat(document.getElementById("kmRidden").value) || 0;
+      const tireCapacity = parseFloat(document.getElementById("tireCapacity").value) || 0;
+      const remainingKm = tireCapacity - kmRidden;
+      
+      document.getElementById("remainingKm").value = remainingKm >= 0 ? remainingKm : 0;
+
+      // Update the pie chart
+      const remaining = remainingKm >= 0 ? remainingKm : 0;
+      updateChart(remaining, kmRidden);
+    }
+
+    // Opens a thank you message after form submission
+    function openThankYouPage() {
+      alert("Thank you for using Secure Wheels!");
+      return false; // Prevents form from submitting to avoid reloading the page
+    }
+
+    // Navigates to the index page when the "Exit" button is clicked
+    function goToIndex() {
+      window.location.href = "index.html";
+    }
+
+    // Initialize the chart when the page loads
+    window.onload = initializeChart;
+  </script>
+</body>
+</html>

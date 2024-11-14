@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protect Your Tire</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="login-background">
+  <!-- Signup Page -->
+  <div class="container" id="signupPage">
+    <h1>Protect Your TYRE</h1>
+    <p><b>Save Your Life</b></p>
+    <form onsubmit="return signupUser()">
+      <label for="signupUsername">Username:</label>
+      <input type="text" id="signupUsername" name="username" required>
+      
+      <label for="signupPassword">Password:</label>
+      <input type="password" id="signupPassword" name="password" required>
+      
+      <div class="buttons">
+        <button type="submit" class="signup-button">Signup</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Login Page -->
+  <div class="container" id="loginPage" style="display:none;">
+  
+    <h1>Protect Your TYRE</h1>
+    <p><b>Save Your Life</b></p>
+    <form onsubmit="return validateLogin()">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+      
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      
+      <div class="buttons">
+        <button type="button" class="signup-button" onclick="showSignup()">Signup</button>
+        <button type="submit" class="login-button" id="loginButton" disabled>Login</button>
+      </div>
+    </form>
+  </div>
+  
+  <script>
+    let validUsername = "";
+    let validPassword = "";
+
+    function signupUser() {
+      validUsername = document.getElementById("signupUsername").value;
+      validPassword = document.getElementById("signupPassword").value;
+      
+      if (validUsername && validPassword) {
+        alert("Signup successful! You can now login.");
+        document.getElementById("signupPage").style.display = "none";
+        document.getElementById("loginPage").style.display = "block";
+        document.getElementById("loginButton").disabled = false; // Activate login button
+        return false; // Prevent form submission
+      }
+      return false; // Prevent form submission
+    }
+
+    function validateLogin() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      if (username === validUsername && password === validPassword) {
+        window.location.href = "bike_tire_health.html"; // Redirect to the target page
+        return false; // Prevent form submission
+      } else {
+        alert("Please provide valid username and password!");
+        return false; // Prevent form submission
+      }
+    }
+
+    function showSignup() {
+      document.getElementById("signupPage").style.display = "block";
+      document.getElementById("loginPage").style.display = "none";
+    }
+  </script>
+</body>
+</html>
